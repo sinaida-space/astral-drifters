@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>ASTRAL DRIFTERS</title>
+<meta name="description" content="An anamorphic tunnel behind your screen. The phone is the window. sin.ai.da">
+<meta name="theme-color" content="#020808">
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+  <canvas id="scene"></canvas>
+  <canvas id="ecg"></canvas>
+
+  <div id="hud" class="hidden">
+    <div id="hud-top">
+      <div id="score">0000</div>
+      <div id="lives">▮▮▮</div>
+    </div>
+    <div id="voice"></div>
+  </div>
+
+  <div id="gate" class="overlay hidden">
+    <h1>ASTRAL DRIFTERS</h1>
+    <p class="dim">this is not a desktop experience.<br>the phone is the instrument.</p>
+    <div id="qr"></div>
+    <p class="dim" id="gate-url"></p>
+  </div>
+
+  <div id="start" class="overlay hidden">
+    <h1>ASTRAL DRIFTERS</h1>
+    <p class="dim">there is a tunnel behind this screen.<br>move the phone to look into it.<br>the paddle stays with you. the world does not.</p>
+    <button id="enter">TAP TO ENTER</button>
+    <p class="dim tiny">motion + audio permission required · headphones recommended</p>
+  </div>
+
+  <div id="gameover" class="overlay hidden">
+    <h1>FLATLINE</h1>
+    <p id="final-score" class="big"></p>
+    <p id="final-remark" class="dim"></p>
+    <button id="again">RE-ENTER</button>
+    <p class="dim tiny">score lives only in this session. like most things.</p>
+  </div>
+
+  <footer id="brand">sin.ai.da</footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

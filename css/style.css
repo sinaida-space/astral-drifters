@@ -1,0 +1,176 @@
+@font-face {
+  font-family: 'VT323';
+  src: url('../assets/fonts/vt323.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Space Mono';
+  src: url('../assets/fonts/SpaceMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Space Mono';
+  src: url('../assets/fonts/SpaceMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --teal: #4ff2e4;
+  --teal-dim: #1e7a72;
+  --ink: #020808;
+  --alert: #ff3b5c;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--teal);
+  font-family: 'Space Mono', monospace;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+}
+
+#scene {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#ecg {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 22px);
+  width: 100%;
+  height: 56px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.hidden { display: none !important; }
+
+/* ---- HUD ---- */
+#hud {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+#hud-top {
+  display: flex;
+  justify-content: space-between;
+  padding: calc(env(safe-area-inset-top, 0px) + 14px) 18px 0;
+  font-family: 'VT323', monospace;
+  font-size: 28px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px var(--teal);
+}
+#lives { color: var(--alert); text-shadow: 0 0 8px var(--alert); }
+
+#voice {
+  position: absolute;
+  left: 50%;
+  top: 18%;
+  transform: translateX(-50%);
+  width: 84%;
+  max-width: 420px;
+  text-align: center;
+  font-family: 'VT323', monospace;
+  font-size: 22px;
+  line-height: 1.35;
+  color: var(--teal);
+  text-shadow: 0 0 10px rgba(79, 242, 228, 0.8);
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+#voice.show { opacity: 1; }
+
+/* ---- Overlays ---- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 24px;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at 50% 60%, rgba(30, 122, 114, 0.16), transparent 70%),
+    var(--ink);
+}
+
+.overlay h1 {
+  font-family: 'VT323', monospace;
+  font-weight: 400;
+  font-size: clamp(38px, 10vw, 64px);
+  letter-spacing: 6px;
+  text-shadow: 0 0 14px var(--teal), 0 0 60px rgba(79, 242, 228, 0.4);
+  animation: flicker 4s infinite;
+}
+
+@keyframes flicker {
+  0%, 92%, 100% { opacity: 1; }
+  93% { opacity: 0.6; }
+  94% { opacity: 1; }
+  97% { opacity: 0.75; }
+  98% { opacity: 1; }
+}
+
+.overlay .dim {
+  color: var(--teal-dim);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.overlay .tiny { font-size: 10px; }
+.overlay .big {
+  font-family: 'VT323', monospace;
+  font-size: 54px;
+  text-shadow: 0 0 14px var(--teal);
+}
+
+button {
+  font-family: 'VT323', monospace;
+  font-size: 26px;
+  letter-spacing: 4px;
+  color: var(--teal);
+  background: transparent;
+  border: 1px solid var(--teal);
+  padding: 14px 34px;
+  cursor: pointer;
+  text-shadow: 0 0 8px var(--teal);
+  box-shadow: 0 0 12px rgba(79, 242, 228, 0.35), inset 0 0 12px rgba(79, 242, 228, 0.12);
+}
+button:active {
+  background: rgba(79, 242, 228, 0.15);
+}
+
+#qr {
+  padding: 12px;
+  border: 1px solid var(--teal-dim);
+  box-shadow: 0 0 24px rgba(79, 242, 228, 0.25);
+}
+#qr canvas, #qr img { display: block; image-rendering: pixelated; }
+
+#brand {
+  position: fixed;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 6px);
+  width: 100%;
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--teal-dim);
+  z-index: 6;
+  pointer-events: none;
+}
