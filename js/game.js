@@ -1,13 +1,16 @@
-// Ball, paddle, blocks. The paddle rides the eye→screen-center ray so it
-// always sits at (near) the middle of the screen — aiming is moving the phone.
+// Ball, paddle, blocks. The paddle is a physical object riding the tilt
+// directly — the phone IS the paddle, moved 1:1 through the room, not an
+// optical artifact of the camera's off-axis ray (that math inverts and
+// shrinks range, which read as "glued to the edges").
 
 import * as THREE from 'three';
 import { TEAL, ALERT } from './scene.js';
 
 const BALL_R = 0.13;
 const PADDLE_W = 1.1, PADDLE_H = 0.8;
-const PADDLE_Z = -3.0;
-const PADDLE_GAIN = 1.3; // >1: paddle reaches walls before max tilt
+const PADDLE_Z = -1.4;       // near the window — it's in your hand
+const PADDLE_REACH = 0.92;   // fraction of half-window reachable at full tilt
+const PADDLE_MARGIN = 0.06;  // forgiveness on corner catches
 
 export class Game {
   constructor(stage, events) {
@@ -108,12 +111,11 @@ export class Game {
     this.events.onWave?.(this.wave);
   }
 
-  update(dt, elapsed) {
-    // paddle follows the eye→center ray (screen-center illusion)
-    const c = this.stage.centerRayAt(PADDLE_Z);
+  update(dt, elapsed, orientX = 0, orientY = 0) {
+    // paddle moves 1:1 with tilt — it's the object in your hand, full reach to the corners
     const W = this.stage.winW, H = this.stage.winH;
-    this.paddle.position.x = clamp(c.x * PADDLE_GAIN, -W / 2 + PADDLE_W / 2, W / 2 - PADDLE_W / 2);
-    this.paddle.position.y = clamp(c.y * PADDLE_GAIN, -H / 2 + PADDLE_H / 2, H / 2 - PADDLE_H / 2);
+    this.paddle.position.x = clamp(orientX * PADDLE_REACH * (W / 2), -W / 2 + PADDLE_W / 2, W / 2 - PADDLE_W / 2);
+    this.paddle.position.y = clamp(orientY * PADDLE_REACH * (H / 2), -H / 2 + PADDLE_H / 2, H / 2 - PADDLE_H / 2);
 
     // blocks drift — they are "flying", not parked
     for (const b of this.blocks) {
@@ -162,7 +164,7 @@ export class Game {
     // paddle plane
     if (prevZ <= PADDLE_Z && p.z > PADDLE_Z && this.vel.z > 0) {
       const dx = p.x - this.paddle.position.x, dy = p.y - this.paddle.position.y;
-      if (Math.abs(dx) < PADDLE_W / 2 + BALL_R && Math.abs(dy) < PADDLE_H / 2 + BALL_R) {
+      if (Math.abs(dx) < PADDLE_W / 2 + BALL_R + PADDLE_MARGIN && Math.abs(dy) < PADDLE_H / 2 + BALL_R + PADDLE_MARGIN) {
         p.z = PADDLE_Z;
         this.vel.z = -Math.abs(this.vel.z);
         this.vel.x += dx * 2.2;

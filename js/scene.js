@@ -18,7 +18,6 @@ export class Stage {
   constructor(canvas) {
     this.canvas = canvas;
     this.eyeDist = 4.0;          // virtual eye distance from the window
-    this.eyeRange = { x: 2.0, y: 2.4 };
 
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
@@ -30,6 +29,11 @@ export class Stage {
     this.camera.matrixAutoUpdate = false;
 
     this._sizeWindow();
+    // eye range scales with the window itself: at full tilt the eye swings
+    // almost a full window-width sideways, so the frustum grazes a side wall
+    // instead of just skewing the same content — this is what makes a hard
+    // tilt read as "you're facing the wall now," not a wobble.
+    this.eyeRange = { x: this.winW * 0.95, y: this.winH * 1.05 };
     this._buildTunnel();
     this._buildPost();
 
@@ -137,6 +141,7 @@ export class Stage {
     this.renderer.setSize(w, h);
     this.composer.setSize(w, h);
     this._sizeWindow();
+    this.eyeRange = { x: this.winW * 0.95, y: this.winH * 1.05 };
     this._buildTunnel();
   }
 
@@ -156,12 +161,6 @@ export class Stage {
     this.camera.matrixWorld.copy(this.camera.matrix);
     this.camera.matrixWorldInverse.copy(this.camera.matrix).invert();
     this.eye = { x: ex, y: ey, d };
-  }
-
-  // Where the eye→screen-center ray crosses plane z, world coords.
-  centerRayAt(z) {
-    const t = (this.eye.d - z) / this.eye.d;
-    return { x: this.eye.x * (1 - t), y: this.eye.y * (1 - t) };
   }
 
   render(dt, elapsed) {

@@ -4,7 +4,7 @@
 const SIGN_X = 1;   // flip if tilting right should look left
 const SIGN_Y = -1;  // flip if tilting away should look up
 
-const RANGE_DEG = 26;   // tilt (deg) that reaches full eye offset
+const RANGE_DEG = 42;   // tilt (deg) that reaches full eye/paddle offset
 
 export class Orientation {
   constructor() {
