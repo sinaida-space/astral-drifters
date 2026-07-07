@@ -134,6 +134,19 @@ html, body {
   line-height: 1.7;
 }
 .overlay .tiny { font-size: 10px; }
+
+#bio { margin-top: -8px; }
+.links {
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+.links a {
+  color: var(--teal);
+  text-decoration: none;
+  border-bottom: 1px solid var(--teal-dim);
+}
+.links a:active { opacity: 0.6; }
+.links .sep { color: var(--teal-dim); margin: 0 10px; }
 .overlay .big {
   font-family: 'VT323', monospace;
   font-size: 54px;
