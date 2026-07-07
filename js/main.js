@@ -59,6 +59,8 @@ function boot() {
 
   $('enter').addEventListener('click', async () => {
     drone.start();
+    drone.tap();
+    document.documentElement.requestFullscreen?.().catch(() => {});
     let ok = true;
     if (!DEBUG) ok = await orient.request();
     if (DEBUG || !ok) orient.enableMouseDebug();
@@ -70,6 +72,7 @@ function boot() {
   });
 
   $('again').addEventListener('click', () => {
+    drone.tap();
     $('gameover').classList.add('hidden');
     ecg.revive();
     game.reset();
@@ -81,8 +84,8 @@ function boot() {
 
   // tap anywhere = serve
   window.addEventListener('pointerdown', (e) => {
-    if (e.target.tagName === 'BUTTON') return;
-    if (running && game.serve()) ecg.beat(0.5);
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') return;
+    if (running && game.serve()) { ecg.beat(0.5); drone.serve(); }
   });
 
   // ---- loop ----
@@ -100,7 +103,7 @@ function boot() {
     stage.updateCamera(orient.x, orient.y);
 
     if (running) {
-      game.update(dt, elapsed);
+      game.update(dt, elapsed, orient.x, orient.y);
       if (game.state === 'play') voice.tickIdle(dt);
       drone.setTension(Math.min((game.speed - 6) / 8, 1));
     }

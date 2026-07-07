@@ -61,7 +61,7 @@ export class Drone {
     }
 
     this.sfxBus = ctx.createGain();
-    this.sfxBus.gain.value = 0.7;
+    this.sfxBus.gain.value = 0.9;
     this.sfxBus.connect(this.master);
     this.sfxBus.connect(delay);
   }
@@ -86,6 +86,8 @@ export class Drone {
     o.start(t); o.stop(t + dur + 0.05);
   }
 
+  tap() { this._ping(300, 0.06, 'square', 0.18); }
+  serve() { this._ping(392, 0.18, 'sine', 0.4, 523); }
   paddle() { this._ping(660, 0.25, 'sine', 0.5); this._ping(662, 0.3, 'sine', 0.25); }
   wall() { this._ping(220 + Math.random() * 60, 0.12, 'triangle', 0.22); }
   block(combo) { this._ping(880 * Math.pow(1.0595, Math.min(combo, 12)), 0.35, 'square', 0.28); }
