@@ -2,6 +2,8 @@
 
 An anamorphic tunnel behind your screen. The phone is the window — and the racket.
 
+> Production mirror. Development and issue tracking run in a private development environment; releases are published here.
+
 Off-axis (Kooima) projection driven by the gyroscope makes the screen read as a
 window into a real teal-lit tunnel. The paddle stays at the center of the screen;
 you aim by moving the phone. Endless Arkanoid run, escalating speed, session-only
