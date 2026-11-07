@@ -13,7 +13,7 @@ and emulates the gyro with the mouse — for development.)
 
 ## Stack
 
-Vanilla ES modules, Three.js via CDN import map, no build step.
+Vanilla ES modules, Three.js via a local import map (vendored in `vendor/`), no build step.
 Fonts self-hosted (VT323, Space Mono). No audio files — the drone is synthesized.
 
 ## Run locally
