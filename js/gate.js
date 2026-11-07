@@ -7,13 +7,25 @@ export function isMobile() {
   return coarse && (ua || touchMac);
 }
 
+// The vendored qrcode-generator is a classic script that defines a global `qrcode`.
+function loadQrcode() {
+  if (window.qrcode) return Promise.resolve(window.qrcode);
+  return new Promise((resolve, reject) => {
+    const el = document.createElement('script');
+    el.src = new URL('../vendor/qrcode-generator/qrcode.js', import.meta.url).href;
+    el.onload = () => resolve(window.qrcode);
+    el.onerror = reject;
+    document.head.appendChild(el);
+  });
+}
+
 export async function showGate() {
   const gate = document.getElementById('gate');
   const url = location.href.split('?')[0];
   document.getElementById('gate-url').textContent = url;
   gate.classList.remove('hidden');
   try {
-    const { default: qrcode } = await import('https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/+esm');
+    const qrcode = await loadQrcode();
     const qr = qrcode(0, 'M');
     qr.addData(url);
     qr.make();

@@ -187,3 +187,8 @@ button:active {
   z-index: 6;
   pointer-events: none;
 }
+
+/* In-game gestures stay inside the canvases and never zoom or scroll the page. */
+#scene, #ecg {
+  touch-action: none;
+}
